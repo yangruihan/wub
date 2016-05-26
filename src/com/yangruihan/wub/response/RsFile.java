@@ -19,6 +19,11 @@ public class RsFile extends ResponseWrap {
 	 * 页面资源
 	 */
 	private String uri;
+	
+	/**
+	 * 文件类型
+	 */
+	private String contentType;
 
 	/**
 	 * Ctor.
@@ -29,6 +34,18 @@ public class RsFile extends ResponseWrap {
 	public RsFile(Request request, String uri) {
 		super(request);
 		this.uri = uri;
+	}
+	
+	/**
+	 * Ctor.
+	 * @param request
+	 * @param uri
+	 * @param contentType
+	 */
+	public RsFile(Request request, String uri, String contentType) {
+		super(request);
+		this.uri = uri;
+		this.contentType = contentType;
 	}
 
 	@Override
@@ -42,11 +59,15 @@ public class RsFile extends ResponseWrap {
 		String content = FileHelper.getContent(this.uri);
 		if (content != null) {
 			setBody(content);
+			if (this.contentType != null && !this.contentType.isEmpty()) {
+				this.addStatus(200, "OK");
+				this.addHeader("Content-Type", this.contentType);
+			}
 		} else {
 			// 找不到文件
-			String header = "HTTP/1.1 404 File NOT Fount\r\n" + "Content-Type: text/html\r\n"
-					+ "Content-Length: 23\r\n";
-			this.setHeader(header);
+			this.addStatus(404, "File NOT Fount");
+			this.addHeader("Content-Type", "text/html");
+			this.addHeader("Content-Length", "23");
 			this.setBody("<h1>File Not Found</h1>");
 		}
 

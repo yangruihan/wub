@@ -61,7 +61,7 @@ public class RequestWrap implements Request {
 			request.append((char) buffer[j]);
 		}
 
-		if (request.toString().length() > 0) {
+		if (request.toString().trim().length() > 0) {
 			// 解析头
 			parseHeader(request.toString());
 
@@ -69,16 +69,20 @@ public class RequestWrap implements Request {
 			parseBody(request.toString());
 		}
 
-		System.out.println("\n-----Request-----");
-		System.out.println("-Request Header:");
-		for (String s : this.header) {
-			System.out.println(s);
+		// System.out.println("\n-----Request-----");
+		// System.out.println("-Request Header:");
+		// for (String s : this.header) {
+		// System.out.println(s);
+		// }
+		// System.out.println("\n-Request Body:");
+		// System.out.println(this.body);
+		// System.out.println("\n-Request Uri:");
+		// System.out.println(getUri());
+		// System.out.println("--------------------");
+
+		if (getHeader() != null && getHeader().size() > 0) {
+			System.out.println(getHeader().get(0));
 		}
-		System.out.println("\n-Request Body:");
-		System.out.println(this.body);
-		System.out.println("\n-Request Uri:");
-		System.out.println(getUri());
-		System.out.println("--------------------");
 	}
 
 	/**
@@ -139,6 +143,9 @@ public class RequestWrap implements Request {
 	 * @return
 	 */
 	public String getUri() {
+		if (header == null || header.size() == 0) {
+			return "";
+		}
 		return this.header.get(0).split(" ")[1];
 	}
 

@@ -4,9 +4,10 @@ import java.io.File;
 
 public interface Web {
 
-	public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "WEB-INF";
+	static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "WEB-INF";
+	static final String HTTP_VERSION = "HTTP/1.1";
 	
 	interface Exit {
-		public static final int NEVER_EXIT = 1;
+		static final int NEVER_EXIT = 1;
 	}
 }

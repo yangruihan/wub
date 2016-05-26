@@ -54,6 +54,9 @@ public class Server {
 	public void start(int exit) throws IOException {
 		this.serverSocket.setSoTimeout((int) TimeUnit.SECONDS.toMillis(1L));
 		
+		System.out.println("----- 服务器正在启动中 -----");
+		System.out.println("----- 服务器启动完成 -----\n");
+		
 		try {
 			do {
 				this.loop(this.serverSocket);

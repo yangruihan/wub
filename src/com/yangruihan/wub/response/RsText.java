@@ -30,7 +30,9 @@ public class RsText extends ResponseWrap {
 	
 	@Override
 	public void send() throws IOException {
-		setResponse(null, this.text);
+		this.addStatus(200, "OK");
+		this.addHeader("Content-type", "text/html");
+		this.setBody(this.text);
 		super.send();
 	}
 }

@@ -48,6 +48,25 @@ public interface Response {
 	void setHeader(String header);
 	
 	/**
+	 * 添加返回状态
+	 * @param str
+	 */
+	void addStatus(int status, String describe);
+	
+	/**
+	 * 添加一个头部
+	 * @param key
+	 * @param value
+	 */
+	void addHeader(String key, String value);
+	
+	/**
+	 * 删除一个头部
+	 * @param key
+	 */
+	void deleteHeader(String key);
+	
+	/**
 	 * 设置身体
 	 */
 	void setBody();

@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.yangruihan.wub.constant.Web;
+
 /**
  * 响应包装类
  * @author Yrh
@@ -58,9 +60,9 @@ public class ResponseWrap implements Response {
 		String response = (header.length() == 0 ? "" : header.toString()) + "\r\n"
 				+ (this.body == null ? "" : this.body) + "\r\n";
 
-		System.out.println("\n-----Response-----");
-		System.out.println(response);
-		System.out.println("--------------------\n");
+//		System.out.println("\n-----Response-----");
+//		System.out.println(response);
+//		System.out.println("--------------------\n");
 
 		output.write(response.getBytes());
 		output.flush();
@@ -117,7 +119,7 @@ public class ResponseWrap implements Response {
 
 		for (String h : headers) {
 			if (!h.isEmpty()) {
-				this.header.add(h + "\r\n");
+				this.header.add(h);
 			}
 		}
 	}
@@ -150,7 +152,6 @@ public class ResponseWrap implements Response {
 		this.output = output;
 	}
 	
-	/*----- getter -----*/
 	@Override
 	public Request getRequest() {
 		return request;
@@ -164,5 +165,41 @@ public class ResponseWrap implements Response {
 	@Override
 	public String getBody() {
 		return body;
+	}
+
+	@Override
+	public void addHeader(String key, String value) {
+		// 先将已存在的头删除，避免冗余
+		deleteHeader(key);
+		this.header.add(String.format("%s: %s", key, value));
+	}
+
+	@Override
+	public void deleteHeader(String key) {
+		if (this.header.size() == 0) return;
+		
+		int del = -1;
+		for (int i = 1; i < this.header.size(); i++) {
+			String s = this.header.get(i);
+			if (s.split(":")[0].equals(key)) {
+				del = i;
+				break;
+			}
+		}
+		
+		if (del != -1) this.header.remove(del);
+	}
+
+	@Override
+	public void addStatus(int status, String describe) {
+		String s = String.format("%s %d %s", Web.HTTP_VERSION, status, describe);
+		if (this.header.size() == 0) {
+			this.header.add(s);
+		} else if (this.header.get(0).contains(":")) {
+			this.header.add(0, s);
+		} else {
+			this.header.remove(0);
+			this.header.add(s);
+		}
 	}
 }
