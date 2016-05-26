@@ -54,12 +54,10 @@ public class TemplateView implements View {
 		if (content == null) {
 			// 找不到文件
 			System.err.println("[Error] File not found: " + uri);
-			String message = "HTTP/1.1 404 File NOT Fount\r\n" + "Content-Type: text/html\r\n"
-					+ "Content-Length: 23\r\n\r\n<h1>File Not Found</h1>";
-			return message;
+			return null;
 		}
 		
-		if (map == null || map.size() == 0) 
+		if (map == null || map.size() == 0)
 			return content;
 		
 		/**
