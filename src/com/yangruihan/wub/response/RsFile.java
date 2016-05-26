@@ -1,15 +1,10 @@
 package com.yangruihan.wub.response;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.Response;
-import com.yangruihan.wub.constant.Web;
+import com.yangruihan.wub.ResponseWrap;
 import com.yangruihan.wub.util.FileHelper;
 
 /**
@@ -18,7 +13,7 @@ import com.yangruihan.wub.util.FileHelper;
  * @author Yrh
  *
  */
-public class RsFile extends Response {
+public class RsFile extends ResponseWrap {
 
 	/**
 	 * 页面资源
@@ -43,7 +38,7 @@ public class RsFile extends Response {
 	}
 
 	@Override
-	protected void setResponse() throws IOException {
+	public void setResponse() throws IOException {
 		String content = FileHelper.getContent(this.uri);
 		if (content != null) {
 			setBody(content);

@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import com.yangruihan.wub.Request;
+import com.yangruihan.wub.RequestWrap;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.Route;
 
@@ -26,7 +27,7 @@ public class Back {
 	
 	public void accept(Socket socket) throws IOException {
 		// 得到 request
-		Request request = new Request(socket.getInputStream());
+		Request request = new RequestWrap(socket.getInputStream());
 		
 		// 得到输出流
 		OutputStream output = socket.getOutputStream();
@@ -35,7 +36,7 @@ public class Back {
 		Response response = this.route.route(request);
 		
 		// 设置输出流
-		response.setOutput(output);
+		response.setOutputStream(output);
 		
 		// 发送响应
 		response.send();

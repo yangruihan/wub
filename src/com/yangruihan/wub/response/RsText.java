@@ -4,13 +4,14 @@ import java.io.IOException;
 
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.Response;
+import com.yangruihan.wub.ResponseWrap;
 
 /**
  * 返回文本的响应
  * @author Yrh
  *
  */
-public class RsText extends Response {
+public class RsText extends ResponseWrap {
 	
 	/**
 	 * 文本

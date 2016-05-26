@@ -2,168 +2,83 @@ package com.yangruihan.wub;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Response 响应类
- * 
+ * 响应接口
  * @author Yrh
  *
  */
-public class Response {
+public interface Response {
 
 	/**
 	 * 缓冲大小
 	 */
-	public static final int RES_BUFFER_SIZE = 2048;
-
-	/**
-	 * 响应的请求
-	 */
-	private final Request request;
-
-	/**
-	 * 输出流
-	 */
-	private OutputStream output;
-
-	/**
-	 * 响应头
-	 */
-	private final List<String> header;
-
-	/**
-	 * 响应体
-	 */
-	private String body;
-
-	/**
-	 * Ctor.
-	 * 
-	 * @param output
-	 * @param request
-	 */
-	public Response(Request request) {
-		this.request = request;
-		header = new LinkedList<>();
-	}
-
+	static final int RES_BUFFER_SIZE = 2048;
+	
 	/**
 	 * 发送响应
-	 * 
 	 * @throws IOException
 	 */
-	public void send() throws IOException {
-		StringBuffer header = new StringBuffer();
-		for (String s : this.header) {
-			header.append(s + "\r\n");
-		}
-
-		String response = (header.length() == 0 ? "" : header.toString()) + "\r\n"
-				+ (this.body == null ? "" : this.body) + "\r\n";
-
-		System.out.println("\n-----Response-----");
-		System.out.println(response);
-		System.out.println("--------------------\n");
-
-		output.write(response.getBytes());
-		output.flush();
-	}
-
+	void send() throws IOException;
+	
 	/**
 	 * 设置响应
-	 * 
 	 * @throws IOException
 	 */
-	protected void setResponse() throws IOException {
-		setHeader();
-		setBody();
-	}
-
+	void setResponse() throws IOException;
+	
 	/**
 	 * 设置响应
-	 * 
 	 * @param header
 	 * @param body
 	 * @throws IOException
 	 */
-	protected void setResponse(String header, String body) throws IOException {
-		setHeader(header);
-		setBody(body);
-	}
+	void setResponse(String header, String body) throws IOException;
 
 	/**
-	 * 设置响应头
+	 * 设置头
 	 */
-	protected void setHeader() throws IOException {
-		if (this.header.size() != 0) {
-			this.header.clear();
-		}
-	}
-
+	void setHeader();
+	
 	/**
-	 * 设置响应头
-	 * 
+	 * 设置头
 	 * @param header
 	 */
-	protected void setHeader(String header) throws IOException {
-		if (header == null) return;
-		
-		if (this.header.size() != 0) {
-			this.header.clear();
-		}
-
-		String[] headers = header.split("\r\n");
-
-		for (String h : headers) {
-			if (!h.isEmpty()) {
-				this.header.add(h + "\r\n");
-			}
-		}
-	}
-
+	void setHeader(String header);
+	
 	/**
-	 * 设置响应体
+	 * 设置身体
 	 */
-	protected void setBody() throws IOException {
-		if (!this.body.isEmpty()) {
-			this.body = "";
-		}
-	}
-
+	void setBody();
+	
 	/**
-	 * 设置响应体
-	 * 
+	 * 设置身体
 	 * @param body
 	 */
-	protected void setBody(String body) throws IOException {
-		this.body = body;
-	}
-
+	void setBody(String body);
+	
 	/**
 	 * 设置输出流
-	 * 
 	 * @param output
 	 */
-	public void setOutput(OutputStream output) {
-		this.output = output;
-	}
+	void setOutputStream(OutputStream output);
+	
+	/**
+	 * 得到请求
+	 * @return
+	 */
+	Request getRequest();
 
-	/*----- getter -----*/
-	public Request getRequest() {
-		return request;
-	}
+	/**
+	 * 得到头部
+	 * @return
+	 */
+	List<String> getHeader();
 
-	public OutputStream getOutput() {
-		return output;
-	}
-
-	public List<String> getHeader() {
-		return header;
-	}
-
-	public String getBody() {
-		return body;
-	}
+	/**
+	 * 得到身体
+	 * @return
+	 */
+	String getBody();
 }
