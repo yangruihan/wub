@@ -2,13 +2,18 @@ package com.yangruihan.wub;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import com.yangruihan.wub.constant.Web;
 
 /**
  * 响应包装类
+ * 
  * @author Yrh
  *
  */
@@ -32,7 +37,7 @@ public class ResponseWrap implements Response {
 	/**
 	 * 响应体
 	 */
-	private String body;
+	private byte[] body;
 
 	/**
 	 * Ctor.
@@ -56,14 +61,16 @@ public class ResponseWrap implements Response {
 		for (String s : this.header) {
 			header.append(s + "\r\n");
 		}
+		
+		//
+		// 打印信息
+		//
+		System.out.println("Response: " + this.header.toString());
 
 		String response = (header.length() == 0 ? "" : header.toString()) + "\r\n"
-				+ (this.body == null ? "" : this.body) + "\r\n";
+				+ (this.body == null ? "" : new String(this.body)) + "\r\n";
 
-//		System.out.println("\n-----Response-----");
-//		System.out.println(response);
-//		System.out.println("--------------------\n");
-
+		// 提交响应到输出流
 		output.write(response.getBytes());
 		output.flush();
 	}
@@ -87,7 +94,7 @@ public class ResponseWrap implements Response {
 	 * @throws IOException
 	 */
 	@Override
-	public void setResponse(String header, String body) throws IOException {
+	public void setResponse(String header, byte[] body) throws IOException {
 		setHeader(header);
 		setBody(body);
 	}
@@ -109,8 +116,9 @@ public class ResponseWrap implements Response {
 	 */
 	@Override
 	public void setHeader(String header) {
-		if (header == null) return;
-		
+		if (header == null)
+			return;
+
 		if (this.header.size() != 0) {
 			this.header.clear();
 		}
@@ -129,8 +137,8 @@ public class ResponseWrap implements Response {
 	 */
 	@Override
 	public void setBody() {
-		if (!this.body.isEmpty()) {
-			this.body = "";
+		if (this.body.length != 0) {
+			this.body = new byte[0];
 		}
 	}
 
@@ -140,7 +148,7 @@ public class ResponseWrap implements Response {
 	 * @param body
 	 */
 	@Override
-	public void setBody(String body) {
+	public void setBody(byte[] body) {
 		this.body = body;
 	}
 
@@ -151,7 +159,7 @@ public class ResponseWrap implements Response {
 	public void setOutputStream(OutputStream output) {
 		this.output = output;
 	}
-	
+
 	@Override
 	public Request getRequest() {
 		return request;
@@ -163,7 +171,7 @@ public class ResponseWrap implements Response {
 	}
 
 	@Override
-	public String getBody() {
+	public byte[] getBody() {
 		return body;
 	}
 
@@ -176,8 +184,9 @@ public class ResponseWrap implements Response {
 
 	@Override
 	public void deleteHeader(String key) {
-		if (this.header.size() == 0) return;
-		
+		if (this.header.size() == 0)
+			return;
+
 		int del = -1;
 		for (int i = 1; i < this.header.size(); i++) {
 			String s = this.header.get(i);
@@ -186,8 +195,9 @@ public class ResponseWrap implements Response {
 				break;
 			}
 		}
-		
-		if (del != -1) this.header.remove(del);
+
+		if (del != -1)
+			this.header.remove(del);
 	}
 
 	@Override
@@ -202,4 +212,23 @@ public class ResponseWrap implements Response {
 			this.header.add(s);
 		}
 	}
+
+//	/**
+//	 * 判断是否已经包含这个头
+//	 * 
+//	 * @param key
+//	 * @return
+//	 */
+//	private boolean containHeader(String key) {
+//		if (this.header.size() == 0)
+//			return false;
+//
+//		for (int i = 1; i < this.header.size(); i++) {
+//			String s = this.header.get(i);
+//			if (s.split(":")[0].equals(key)) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 }

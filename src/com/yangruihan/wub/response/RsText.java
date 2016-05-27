@@ -35,11 +35,11 @@ public class RsText extends ResponseWrap {
 		if (this.text != null) {
 			this.addStatus(200, "OK");
 			this.addHeader("Content-type", "text/html");
-			this.setBody(this.text);
+			this.setBody(this.text.getBytes());
 		} else {
 			this.addStatus(404, "Not Found");
 			this.addHeader("Content-type", "text/html");
-			this.setBody("<div>Resource Not Found</div>");
+			this.setBody("<div>Resource Not Found</div>".getBytes());
 		}
 		super.send();
 	}

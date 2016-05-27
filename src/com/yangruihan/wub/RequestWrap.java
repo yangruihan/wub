@@ -29,7 +29,7 @@ public class RequestWrap implements Request {
 	/**
 	 * 身体
 	 */
-	private String body;
+	private byte[] body;
 
 	/**
 	 * Ctor.
@@ -40,7 +40,7 @@ public class RequestWrap implements Request {
 	public RequestWrap(InputStream input) throws IOException {
 		this.input = input;
 		this.header = new LinkedList<>();
-		this.body = "";
+		this.body = new byte[0];
 
 		// 解析输入流
 		parse();
@@ -69,19 +69,11 @@ public class RequestWrap implements Request {
 			parseBody(request.toString());
 		}
 
-		// System.out.println("\n-----Request-----");
-		// System.out.println("-Request Header:");
-		// for (String s : this.header) {
-		// System.out.println(s);
-		// }
-		// System.out.println("\n-Request Body:");
-		// System.out.println(this.body);
-		// System.out.println("\n-Request Uri:");
-		// System.out.println(getUri());
-		// System.out.println("--------------------");
-
+		//
+		// 打印信息
+		//
 		if (getHeader() != null && getHeader().size() > 0) {
-			System.out.println(getHeader().get(0));
+			System.out.println("Request: " + getHeader().get(0));
 		}
 	}
 
@@ -115,7 +107,7 @@ public class RequestWrap implements Request {
 	 */
 	private void parseBody(String request) {
 		int i = request.indexOf("\r\n\r\n");
-		this.body = request.substring(i + 4);
+		this.body = request.substring(i + 4).getBytes();
 	}
 
 	/*----- getter -----*/
@@ -133,7 +125,7 @@ public class RequestWrap implements Request {
 	 * 
 	 * @return
 	 */
-	public String getBody() {
+	public byte[] getBody() {
 		return body;
 	}
 
@@ -172,7 +164,7 @@ public class RequestWrap implements Request {
 			}
 		}
 
-		String[] bodyValues = this.body.trim().split("&");
+		String[] bodyValues = new String(this.body).trim().split("&");
 		// 得到身体参数
 		if (bodyValues != null && bodyValues.length > 0) {
 			for (String value : bodyValues) {
@@ -203,7 +195,7 @@ public class RequestWrap implements Request {
 	 * 得到Post方法某个参数
 	 */
 	public String post(String key) {
-		String[] bodyValues = this.body.trim().split("&");
+		String[] bodyValues = new String(this.body).trim().split("&");
 		if (bodyValues != null && bodyValues.length > 0) {
 			for (String value : bodyValues) {
 				String[] kv = value.split("=");

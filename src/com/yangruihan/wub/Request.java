@@ -25,7 +25,7 @@ public interface Request {
 	 * 得到身体
 	 * @return
 	 */
-	String getBody();
+	byte[] getBody();
 
 	/**
 	 * 得到 Uri

@@ -34,7 +34,7 @@ public interface Response {
 	 * @param body
 	 * @throws IOException
 	 */
-	void setResponse(String header, String body) throws IOException;
+	void setResponse(String header, byte[] body) throws IOException;
 
 	/**
 	 * 设置头
@@ -75,7 +75,7 @@ public interface Response {
 	 * 设置身体
 	 * @param body
 	 */
-	void setBody(String body);
+	void setBody(byte[] body);
 	
 	/**
 	 * 设置输出流
@@ -99,5 +99,5 @@ public interface Response {
 	 * 得到身体
 	 * @return
 	 */
-	String getBody();
+	byte[] getBody();
 }
