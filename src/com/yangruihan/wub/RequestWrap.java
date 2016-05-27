@@ -32,6 +32,16 @@ public class RequestWrap implements Request {
 	private byte[] body;
 
 	/**
+	 * Cookies
+	 */
+	private Map<String, Cookie> cookies;
+	
+	/**
+	 * Uri
+	 */
+	private String uri;
+
+	/**
 	 * Ctor.
 	 * 
 	 * @param input
@@ -41,6 +51,8 @@ public class RequestWrap implements Request {
 		this.input = input;
 		this.header = new LinkedList<>();
 		this.body = new byte[0];
+		this.cookies = new HashMap<>();
+		this.uri = "";
 
 		// 解析输入流
 		parse();
@@ -67,6 +79,12 @@ public class RequestWrap implements Request {
 
 			// 解析身体
 			parseBody(request.toString());
+
+			// 解析 Uri
+			parseUri();
+			
+			// 解析 Cookie
+			parseCookies();
 		}
 
 		//
@@ -109,8 +127,40 @@ public class RequestWrap implements Request {
 		int i = request.indexOf("\r\n\r\n");
 		this.body = request.substring(i + 4).getBytes();
 	}
+	
+	private void parseUri() {
+		if (header == null || header.size() == 0) {
+			return;
+		}
+		
+		this.uri = this.header.get(0).split(" ")[1];
+	}
 
-	/*----- getter -----*/
+	/**
+	 * 解析Cookies
+	 */
+	private void parseCookies() {
+		if (header == null || header.size() == 0) {
+			return;
+		}
+		
+		Map<String, Cookie> cookies = new HashMap<>();
+
+		for (String header : this.header) {
+			String[] vk = header.split(":");
+			if (vk.length == 2 && vk[0].equals("Cookie")) {
+				for (String cookieStr : vk[1].split("; ")) {
+					if (cookieStr.split("=").length == 2) {
+						Cookie cookie = new Cookie(cookieStr.split("=")[0], cookieStr.split("=")[1]);
+						cookies.put(cookie.getName(), cookie);
+					}
+				}
+			}
+		}
+		
+		this.cookies = cookies;
+	}
+
 	/**
 	 * 得到头
 	 * 
@@ -135,10 +185,7 @@ public class RequestWrap implements Request {
 	 * @return
 	 */
 	public String getUri() {
-		if (header == null || header.size() == 0) {
-			return "";
-		}
-		return this.header.get(0).split(" ")[1];
+		return this.uri;
 	}
 
 	/**
@@ -227,5 +274,15 @@ public class RequestWrap implements Request {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Map<String, Cookie> getCookies() {
+		return this.cookies;
+	}
+
+	@Override
+	public Cookie getCookie(String cookieName) {
+		return this.cookies.get(cookieName);
 	}
 }

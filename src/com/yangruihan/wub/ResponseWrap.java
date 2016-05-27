@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.yangruihan.wub.constant.Web;
+import com.yangruihan.wub.constant.Constant;
 
 /**
  * 响应包装类
@@ -61,7 +61,7 @@ public class ResponseWrap implements Response {
 		for (String s : this.header) {
 			header.append(s + "\r\n");
 		}
-		
+
 		//
 		// 打印信息
 		//
@@ -176,6 +176,15 @@ public class ResponseWrap implements Response {
 	}
 
 	@Override
+	public void addHeader(String key, String value, boolean flag) {
+		if (flag == true) {
+			// 先将已存在的头删除，避免冗余
+			deleteHeader(key);
+		}
+		this.header.add(String.format("%s: %s", key, value));
+	}
+
+	@Override
 	public void addHeader(String key, String value) {
 		// 先将已存在的头删除，避免冗余
 		deleteHeader(key);
@@ -202,7 +211,7 @@ public class ResponseWrap implements Response {
 
 	@Override
 	public void addStatus(int status, String describe) {
-		String s = String.format("%s %d %s", Web.HTTP_VERSION, status, describe);
+		String s = String.format("%s %d %s", Constant.Http.HTTP_VERSION, status, describe);
 		if (this.header.size() == 0) {
 			this.header.add(s);
 		} else if (this.header.get(0).contains(":")) {
@@ -213,22 +222,58 @@ public class ResponseWrap implements Response {
 		}
 	}
 
-//	/**
-//	 * 判断是否已经包含这个头
-//	 * 
-//	 * @param key
-//	 * @return
-//	 */
-//	private boolean containHeader(String key) {
-//		if (this.header.size() == 0)
-//			return false;
-//
-//		for (int i = 1; i < this.header.size(); i++) {
-//			String s = this.header.get(i);
-//			if (s.split(":")[0].equals(key)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
+	@Override
+	public void addCookie(Cookie cookie) {
+		StringBuilder setCookie = new StringBuilder();
+		setCookie.append(cookie.getName() + "=" + cookie.getValue() + "; ");
+
+		if (cookie.getComment() != null) {
+			setCookie.append("Comment=" + cookie.getComment() + "; ");
+		}
+
+		if (cookie.getDomain() != null) {
+			setCookie.append("Domain=" + cookie.getDomain() + "; ");
+		}
+
+		if (cookie.getMaxAge() != -1) {
+			setCookie.append("Max-Age=" + cookie.getMaxAge() + "; ");
+		}
+
+		if (cookie.getPath() != null) {
+			setCookie.append("Path=" + cookie.getPath() + "; ");
+		}
+
+		if (cookie.getSecure()) {
+			setCookie.append("Secure; ");
+		}
+
+		if (cookie.getVersion() != 0) {
+			setCookie.append("Version=" + cookie.getVersion() + "; ");
+		}
+
+		if (setCookie.toString().endsWith("; ")) {
+			setCookie.delete(setCookie.length() - 2, setCookie.length());
+		}
+
+		addHeader("Set-Cookie", setCookie.toString(), false);
+	}
+
+	// /**
+	// * 判断是否已经包含这个头
+	// *
+	// * @param key
+	// * @return
+	// */
+	// private boolean containHeader(String key) {
+	// if (this.header.size() == 0)
+	// return false;
+	//
+	// for (int i = 1; i < this.header.size(); i++) {
+	// String s = this.header.get(i);
+	// if (s.split(":")[0].equals(key)) {
+	// return true;
+	// }
+	// }
+	// return false;
+	// }
 }

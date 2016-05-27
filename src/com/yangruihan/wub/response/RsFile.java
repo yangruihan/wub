@@ -66,7 +66,7 @@ public class RsFile extends ResponseWrap {
 		} else {
 			// 找不到文件
 			this.addStatus(404, "File NOT Fount");
-			this.addHeader("Content-Type", "text/html");
+			this.addHeader("Content-Type", "text/html; charset=utf-8");
 			this.addHeader("Content-Length", "23");
 			this.setBody("<h1>File Not Found</h1>".getBytes());
 		}

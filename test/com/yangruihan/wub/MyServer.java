@@ -10,7 +10,7 @@ import com.yangruihan.wub.action.JsonTestAction;
 import com.yangruihan.wub.action.RsTextTestAction;
 import com.yangruihan.wub.action.UserAction;
 import com.yangruihan.wub.action.UserSubmitAction;
-import com.yangruihan.wub.constant.Web;
+import com.yangruihan.wub.constant.Constant;
 import com.yangruihan.wub.http.Server;
 import com.yangruihan.wub.response.RsFile;
 import com.yangruihan.wub.route.RtBasic;
@@ -37,6 +37,6 @@ public class MyServer {
 		
 		Server server = new Server(8080, new RtBasic(maps));
 		
-		server.start(Web.Exit.NEVER_EXIT);
+		server.start(Constant.Exit.NEVER_EXIT);
 	}
 }

@@ -54,11 +54,19 @@ public interface Response {
 	void addStatus(int status, String describe);
 	
 	/**
-	 * 添加一个头部
+	 * 添加一个头部（如果已存在，则先删除）
 	 * @param key
 	 * @param value
 	 */
 	void addHeader(String key, String value);
+	
+	/**
+	 * 添加一个头部
+	 * @param key 
+	 * @param value
+	 * @param flag 如果已存在是否删除
+	 */
+	void addHeader(String key, String value, boolean flag);
 	
 	/**
 	 * 删除一个头部
@@ -82,6 +90,12 @@ public interface Response {
 	 * @param output
 	 */
 	void setOutputStream(OutputStream output);
+	
+	/**
+	 * 添加 Cookie
+	 * @param cookie
+	 */
+	void addCookie(Cookie cookie);
 	
 	/**
 	 * 得到请求

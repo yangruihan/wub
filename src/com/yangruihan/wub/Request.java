@@ -46,6 +46,19 @@ public interface Request {
 	String getParameter(String key);
 	
 	/**
+	 * 得到所有Cookie
+	 * @return
+	 */
+	Map<String, Cookie> getCookies();
+	
+	/**
+	 * 得到一个指定的Cookie
+	 * @param cookieName
+	 * @return
+	 */
+	Cookie getCookie(String cookieName);
+	
+	/**
 	 * 得到 Post 方法中的某一个参数
 	 * @param key
 	 * @return
