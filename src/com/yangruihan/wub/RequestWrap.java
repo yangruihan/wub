@@ -29,7 +29,17 @@ public class RequestWrap implements Request {
 	/**
 	 * 身体
 	 */
-	private String body;
+	private byte[] body;
+
+	/**
+	 * Cookies
+	 */
+	private Map<String, Cookie> cookies;
+	
+	/**
+	 * Uri
+	 */
+	private String uri;
 
 	/**
 	 * Ctor.
@@ -40,7 +50,9 @@ public class RequestWrap implements Request {
 	public RequestWrap(InputStream input) throws IOException {
 		this.input = input;
 		this.header = new LinkedList<>();
-		this.body = "";
+		this.body = new byte[0];
+		this.cookies = new HashMap<>();
+		this.uri = "";
 
 		// 解析输入流
 		parse();
@@ -67,21 +79,19 @@ public class RequestWrap implements Request {
 
 			// 解析身体
 			parseBody(request.toString());
+
+			// 解析 Uri
+			parseUri();
+			
+			// 解析 Cookie
+			parseCookies();
 		}
 
-		// System.out.println("\n-----Request-----");
-		// System.out.println("-Request Header:");
-		// for (String s : this.header) {
-		// System.out.println(s);
-		// }
-		// System.out.println("\n-Request Body:");
-		// System.out.println(this.body);
-		// System.out.println("\n-Request Uri:");
-		// System.out.println(getUri());
-		// System.out.println("--------------------");
-
+		//
+		// 打印信息
+		//
 		if (getHeader() != null && getHeader().size() > 0) {
-			System.out.println(getHeader().get(0));
+			System.out.println("Request: " + getHeader().get(0));
 		}
 	}
 
@@ -115,10 +125,42 @@ public class RequestWrap implements Request {
 	 */
 	private void parseBody(String request) {
 		int i = request.indexOf("\r\n\r\n");
-		this.body = request.substring(i + 4);
+		this.body = request.substring(i + 4).getBytes();
+	}
+	
+	private void parseUri() {
+		if (header == null || header.size() == 0) {
+			return;
+		}
+		
+		this.uri = this.header.get(0).split(" ")[1];
 	}
 
-	/*----- getter -----*/
+	/**
+	 * 解析Cookies
+	 */
+	private void parseCookies() {
+		if (header == null || header.size() == 0) {
+			return;
+		}
+		
+		Map<String, Cookie> cookies = new HashMap<>();
+
+		for (String header : this.header) {
+			String[] vk = header.split(":");
+			if (vk.length == 2 && vk[0].equals("Cookie")) {
+				for (String cookieStr : vk[1].split("; ")) {
+					if (cookieStr.split("=").length == 2) {
+						Cookie cookie = new Cookie(cookieStr.split("=")[0], cookieStr.split("=")[1]);
+						cookies.put(cookie.getName(), cookie);
+					}
+				}
+			}
+		}
+		
+		this.cookies = cookies;
+	}
+
 	/**
 	 * 得到头
 	 * 
@@ -133,7 +175,7 @@ public class RequestWrap implements Request {
 	 * 
 	 * @return
 	 */
-	public String getBody() {
+	public byte[] getBody() {
 		return body;
 	}
 
@@ -143,10 +185,7 @@ public class RequestWrap implements Request {
 	 * @return
 	 */
 	public String getUri() {
-		if (header == null || header.size() == 0) {
-			return "";
-		}
-		return this.header.get(0).split(" ")[1];
+		return this.uri;
 	}
 
 	/**
@@ -172,7 +211,7 @@ public class RequestWrap implements Request {
 			}
 		}
 
-		String[] bodyValues = this.body.trim().split("&");
+		String[] bodyValues = new String(this.body).trim().split("&");
 		// 得到身体参数
 		if (bodyValues != null && bodyValues.length > 0) {
 			for (String value : bodyValues) {
@@ -203,7 +242,7 @@ public class RequestWrap implements Request {
 	 * 得到Post方法某个参数
 	 */
 	public String post(String key) {
-		String[] bodyValues = this.body.trim().split("&");
+		String[] bodyValues = new String(this.body).trim().split("&");
 		if (bodyValues != null && bodyValues.length > 0) {
 			for (String value : bodyValues) {
 				String[] kv = value.split("=");
@@ -235,5 +274,15 @@ public class RequestWrap implements Request {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Map<String, Cookie> getCookies() {
+		return this.cookies;
+	}
+
+	@Override
+	public Cookie getCookie(String cookieName) {
+		return this.cookies.get(cookieName);
 	}
 }

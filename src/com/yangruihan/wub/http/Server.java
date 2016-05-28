@@ -6,7 +6,7 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 import com.yangruihan.wub.Route;
-import com.yangruihan.wub.constant.Web;
+import com.yangruihan.wub.constant.Constant;
 
 /**
  * 服务器
@@ -60,7 +60,7 @@ public class Server {
 		try {
 			do {
 				this.loop(this.serverSocket);
-			} while (exit == Web.Exit.NEVER_EXIT ? true : false);
+			} while (exit == Constant.Exit.NEVER_EXIT ? true : false);
 		} finally {
 			this.serverSocket.close();
 		}

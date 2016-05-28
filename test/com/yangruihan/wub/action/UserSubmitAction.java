@@ -20,7 +20,7 @@ public class UserSubmitAction implements Action {
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", request.getParameter("username"));
 		
-		return new RsText(request, new TemplateView("/show", map).render());
+		return new RsText(request, new TemplateView("/show.html", map).render());
 	}
 
 }

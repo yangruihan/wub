@@ -58,17 +58,17 @@ public class RsFile extends ResponseWrap {
 	public void setResponse() throws IOException {
 		String content = FileHelper.getContent(this.uri);
 		if (content != null) {
-			setBody(content);
+			setBody(content.getBytes());
+			this.addStatus(200, "OK");
 			if (this.contentType != null && !this.contentType.isEmpty()) {
-				this.addStatus(200, "OK");
 				this.addHeader("Content-Type", this.contentType);
 			}
 		} else {
 			// 找不到文件
 			this.addStatus(404, "File NOT Fount");
-			this.addHeader("Content-Type", "text/html");
+			this.addHeader("Content-Type", "text/html; charset=utf-8");
 			this.addHeader("Content-Length", "23");
-			this.setBody("<h1>File Not Found</h1>");
+			this.setBody("<h1>File Not Found</h1>".getBytes());
 		}
 
 	}

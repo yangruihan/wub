@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.yangruihan.wub.constant.Web;
+import com.yangruihan.wub.constant.Constant;
 
 /**
  * 获取HTML文件
@@ -21,7 +21,7 @@ public class FileHelper {
 	 * @throws IOException
 	 */
 	public static String getContent(String uri) throws IOException {
-		File file = new File(Web.WEB_ROOT, uri);
+		File file = new File(Constant.WEB_ROOT, uri);
 		BufferedReader reader = null;
 		if (file.exists()) {
 			reader = new BufferedReader(new FileReader(file));

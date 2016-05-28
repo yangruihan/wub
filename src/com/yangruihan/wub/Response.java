@@ -34,7 +34,7 @@ public interface Response {
 	 * @param body
 	 * @throws IOException
 	 */
-	void setResponse(String header, String body) throws IOException;
+	void setResponse(String header, byte[] body) throws IOException;
 
 	/**
 	 * 设置头
@@ -54,11 +54,19 @@ public interface Response {
 	void addStatus(int status, String describe);
 	
 	/**
-	 * 添加一个头部
+	 * 添加一个头部（如果已存在，则先删除）
 	 * @param key
 	 * @param value
 	 */
 	void addHeader(String key, String value);
+	
+	/**
+	 * 添加一个头部
+	 * @param key 
+	 * @param value
+	 * @param flag 如果已存在是否删除
+	 */
+	void addHeader(String key, String value, boolean flag);
 	
 	/**
 	 * 删除一个头部
@@ -75,13 +83,19 @@ public interface Response {
 	 * 设置身体
 	 * @param body
 	 */
-	void setBody(String body);
+	void setBody(byte[] body);
 	
 	/**
 	 * 设置输出流
 	 * @param output
 	 */
 	void setOutputStream(OutputStream output);
+	
+	/**
+	 * 添加 Cookie
+	 * @param cookie
+	 */
+	void addCookie(Cookie cookie);
 	
 	/**
 	 * 得到请求
@@ -99,5 +113,5 @@ public interface Response {
 	 * 得到身体
 	 * @return
 	 */
-	String getBody();
+	byte[] getBody();
 }

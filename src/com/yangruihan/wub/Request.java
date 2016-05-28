@@ -25,7 +25,7 @@ public interface Request {
 	 * 得到身体
 	 * @return
 	 */
-	String getBody();
+	byte[] getBody();
 
 	/**
 	 * 得到 Uri
@@ -44,6 +44,19 @@ public interface Request {
 	 * @return
 	 */
 	String getParameter(String key);
+	
+	/**
+	 * 得到所有Cookie
+	 * @return
+	 */
+	Map<String, Cookie> getCookies();
+	
+	/**
+	 * 得到一个指定的Cookie
+	 * @param cookieName
+	 * @return
+	 */
+	Cookie getCookie(String cookieName);
 	
 	/**
 	 * 得到 Post 方法中的某一个参数
