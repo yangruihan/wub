@@ -149,7 +149,7 @@ public class RequestWrap implements Request {
 		for (String header : this.header) {
 			String[] vk = header.split(":");
 			if (vk.length == 2 && vk[0].equals("Cookie")) {
-				for (String cookieStr : vk[1].split("; ")) {
+				for (String cookieStr : vk[1].trim().split("; ")) {
 					if (cookieStr.split("=").length == 2) {
 						Cookie cookie = new Cookie(cookieStr.split("=")[0], cookieStr.split("=")[1]);
 						cookies.put(cookie.getName(), cookie);

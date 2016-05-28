@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.yangruihan.wub.action.CookieTest2Action;
+import com.yangruihan.wub.action.CookieTestAction;
 import com.yangruihan.wub.action.GetTestAction;
 import com.yangruihan.wub.action.IndexAction;
 import com.yangruihan.wub.action.JsonTestAction;
@@ -34,6 +36,8 @@ public class MyServer {
 				return new RsFile(request, "/test.txt");
 			}
 		});
+		maps.put("/testCookie", new CookieTestAction());
+		maps.put("/testCookie2", new CookieTest2Action());
 		
 		Server server = new Server(8080, new RtBasic(maps));
 		
