@@ -1,4 +1,4 @@
 # Wub
 
 A simple java web framework.
-try to make template system.
+Try to make template system.

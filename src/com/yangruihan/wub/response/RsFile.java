@@ -28,7 +28,7 @@ public class RsFile extends ResponseWrap {
 	/**
 	 * Ctor.
 	 * 
-	 * @param response
+	 * @param request
 	 * @param uri
 	 */
 	public RsFile(Request request, String uri) {

@@ -5,6 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-	Username: {username}
+    {# show username #}
+    {% if username == wustzz %}
+	Username: {{ username }}<br/>
+    {# show password #}
+    Password: {{ password }}<br/>
+    {% endif %}
+
 </body>
 </html>

@@ -19,6 +19,7 @@ public class UserSubmitAction implements Action {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", request.getParameter("username"));
+		map.put("password", request.getParameter("password"));
 		
 		return new RsText(request, new TemplateView("/show.html", map).render());
 	}

@@ -42,7 +42,6 @@ public class ResponseWrap implements Response {
 	/**
 	 * Ctor.
 	 * 
-	 * @param output
 	 * @param request
 	 */
 	public ResponseWrap(Request request) {

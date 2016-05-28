@@ -16,6 +16,15 @@ import com.yangruihan.wub.util.FileHelper;
  */
 public class TemplateView implements View {
 
+    // regex to match variable
+	private String variable = "\\{\\{ %s \\}\\}";
+
+    // regex to match comment
+    private String comment = "\\{# .*? #\\}";
+
+    //regex to match tag
+    private String tagName = "\\{% .*? %\\}";
+
 	/**
 	 * 视图资源位置
 	 */
@@ -70,12 +79,24 @@ public class TemplateView implements View {
 			
 			String key = entry.getKey();
 			Object value = entry.getValue();
-			
-			Pattern pattern = Pattern.compile("\\{" + key + "\\}");
-			Matcher result = pattern.matcher(content);
+
+            Pattern pattern = Pattern.compile(String.format(variable, key));
+
+            Matcher result = pattern.matcher(content);
 			content = result.replaceAll(value == null ? "" : value.toString());
 		}
-		
-		return content;
+
+        // remove comment
+        Pattern pattern = Pattern.compile(comment);
+        Matcher result = pattern.matcher(content);
+        content = result.replaceAll("");
+
+
+        // render if
+        pattern = Pattern.compile(tagName);
+        result = pattern.matcher(content);
+        System.out.println(result.toString());
+
+        return content;
 	}
 }
