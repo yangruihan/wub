@@ -8,13 +8,7 @@ import java.util.Map;
  * @author Yrh
  *
  */
-public abstract class Route {
+public interface Route {
 
-	protected Map<String, Action> maps;
-	
-	public Route(Map<String, Action> maps) {
-		this.maps = maps;
-	}
-	
-	public abstract Response route(Request request) throws IOException;
+	Response route(Request request) throws IOException;
 }

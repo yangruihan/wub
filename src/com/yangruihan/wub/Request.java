@@ -46,6 +46,13 @@ public interface Request {
 	String getParameter(String key);
 	
 	/**
+	 * 设置一个参数
+	 * @param key
+	 * @param value
+	 */
+	void setParameter(String key, String value);
+	
+	/**
 	 * 得到所有Cookie
 	 * @return
 	 */

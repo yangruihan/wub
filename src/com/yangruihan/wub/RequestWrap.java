@@ -40,7 +40,22 @@ public class RequestWrap implements Request {
 	 * Uri
 	 */
 	private String uri;
-
+	
+	/**
+	 * 所有参数
+	 */
+	private Map<String, String> parameters;
+	
+	/**
+	 * POST 方法传递的参数
+	 */
+	private Map<String, String> postParameters;
+	
+	/**
+	 * GET 方法传递的参数
+	 */
+	private Map<String, String> getParameters;
+	
 	/**
 	 * Ctor.
 	 * 
@@ -53,6 +68,9 @@ public class RequestWrap implements Request {
 		this.body = new byte[0];
 		this.cookies = new HashMap<>();
 		this.uri = "";
+		this.parameters = new HashMap<>();
+		this.postParameters = new HashMap<>();
+		this.getParameters = new HashMap<>();
 
 		// 解析输入流
 		parse();
@@ -85,6 +103,9 @@ public class RequestWrap implements Request {
 			
 			// 解析 Cookie
 			parseCookies();
+			
+			// 解析参数
+			parseParameters();
 		}
 
 		//
@@ -92,6 +113,40 @@ public class RequestWrap implements Request {
 		//
 		if (getHeader() != null && getHeader().size() > 0) {
 			System.out.println("Request: " + getHeader().get(0));
+		}
+	}
+
+	/**
+	 * 解析参数
+	 */
+	private void parseParameters() {
+		String[] headerValue = this.getUri().trim().split("\\?");
+		if (headerValue != null && headerValue.length == 2) {
+			String[] headerValues = headerValue[1].split("&");
+
+			// 得到头部参数
+			if (headerValues != null && headerValues.length > 0) {
+				for (String value : headerValues) {
+					String[] kv = value.split("=");
+					if (kv.length == 2) {
+						this.getParameters.put(kv[0], kv[1]);
+						this.parameters.put(kv[0], kv[1]);
+					}
+				}
+			}
+		}
+		
+
+		String[] bodyValues = new String(this.body).trim().split("&");
+		// 得到身体参数
+		if (bodyValues != null && bodyValues.length > 0) {
+			for (String value : bodyValues) {
+				String[] kv = value.split("=");
+				if (kv.length == 2) {
+					this.postParameters.put(kv[0], kv[1]);
+					this.parameters.put(kv[0], kv[1]);
+				}
+			}
 		}
 	}
 
@@ -128,6 +183,9 @@ public class RequestWrap implements Request {
 		this.body = request.substring(i + 4).getBytes();
 	}
 	
+	/**
+	 * 解析 Uri
+	 */
 	private void parseUri() {
 		if (header == null || header.size() == 0) {
 			return;
@@ -194,35 +252,7 @@ public class RequestWrap implements Request {
 	 * @return
 	 */
 	public Map<String, String> getParameters() {
-		Map<String, String> ret = new HashMap<>();
-
-		String[] headerValue = this.getUri().trim().split("\\?");
-		if (headerValue != null && headerValue.length == 2) {
-			String[] headerValues = headerValue[1].split("&");
-
-			// 得到头部参数
-			if (headerValues != null && headerValues.length > 0) {
-				for (String value : headerValues) {
-					String[] kv = value.split("=");
-					if (kv.length == 2) {
-						ret.put(kv[0], kv[1]);
-					}
-				}
-			}
-		}
-
-		String[] bodyValues = new String(this.body).trim().split("&");
-		// 得到身体参数
-		if (bodyValues != null && bodyValues.length > 0) {
-			for (String value : bodyValues) {
-				String[] kv = value.split("=");
-				if (kv.length == 2) {
-					ret.put(kv[0], kv[1]);
-				}
-			}
-		}
-
-		return ret;
+		return this.parameters;
 	}
 
 	/**
@@ -232,26 +262,14 @@ public class RequestWrap implements Request {
 	 * @return
 	 */
 	public String getParameter(String key) {
-		if (!key.isEmpty()) {
-			return getParameters().get(key);
-		}
-		return null;
+		return this.parameters.get(key);
 	}
 
 	/**
 	 * 得到Post方法某个参数
 	 */
 	public String post(String key) {
-		String[] bodyValues = new String(this.body).trim().split("&");
-		if (bodyValues != null && bodyValues.length > 0) {
-			for (String value : bodyValues) {
-				String[] kv = value.split("=");
-				if (kv.length == 2 && kv[0].equals(key)) {
-					return kv[1];
-				}
-			}
-		}
-		return null;
+		return this.postParameters.get(key);
 	}
 
 	/**
@@ -261,19 +279,7 @@ public class RequestWrap implements Request {
 	 * @return
 	 */
 	public String get(String key) {
-		String[] headerValue = this.getUri().trim().split("\\?");
-		if (headerValue != null && headerValue.length == 2) {
-			String[] headerValues = headerValue[1].split("&");
-			if (headerValues != null && headerValues.length > 0) {
-				for (String value : headerValues) {
-					String[] kv = value.split("=");
-					if (kv.length == 2 && kv[0].equals(key)) {
-						return kv[1];
-					}
-				}
-			}
-		}
-		return null;
+		return getParameters.get(key);
 	}
 
 	@Override
@@ -284,5 +290,12 @@ public class RequestWrap implements Request {
 	@Override
 	public Cookie getCookie(String cookieName) {
 		return this.cookies.get(cookieName);
+	}
+
+	@Override
+	public void setParameter(String key, String value) {
+		if (key != null && !key.isEmpty() && value != null && !value.isEmpty()) {
+			this.parameters.put(key, value);
+		}
 	}
 }

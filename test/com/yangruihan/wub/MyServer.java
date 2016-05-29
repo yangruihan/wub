@@ -16,7 +16,8 @@ import com.yangruihan.wub.constant.Constant;
 import com.yangruihan.wub.http.Server;
 import com.yangruihan.wub.middleware.DateMiddlewareTestAction;
 import com.yangruihan.wub.response.RsFile;
-import com.yangruihan.wub.route.RtBasic;
+import com.yangruihan.wub.route.RegexTestAction;
+import com.yangruihan.wub.route.RtRegex;
 
 public class MyServer {
 
@@ -24,24 +25,25 @@ public class MyServer {
 		
 		Map<String, Action> maps = new HashMap<>();
 		
-		maps.put("/", new IndexAction());
-		maps.put("/user", new UserAction());
-		maps.put("/useraction", new UserSubmitAction());
-		maps.put("/get", new GetTestAction());
-		maps.put("/hello", new RsTextTestAction());
-		maps.put("/json", new JsonTestAction());
-		maps.put("/test", new Action() {
+		maps.put("^$", new IndexAction());
+		maps.put("/user$", new UserAction());
+		maps.put("/useraction$", new UserSubmitAction());
+		maps.put("/get$", new GetTestAction());
+		maps.put("/hello$", new RsTextTestAction());
+		maps.put("/json$", new JsonTestAction());
+		maps.put("/test$", new Action() {
 			
 			@Override
 			public Response action(Request request) throws IOException {
 				return new RsFile(request, "/test.txt");
 			}
 		});
-		maps.put("/testCookie", new CookieTestAction());
-		maps.put("/testCookie2", new CookieTest2Action());
-		maps.put("/testDateMid", new DateMiddlewareTestAction());
+		maps.put("/testCookie$", new CookieTestAction());
+		maps.put("/testCookie2$", new CookieTest2Action());
+		maps.put("/testDateMid$", new DateMiddlewareTestAction());
+		maps.put("^/testRegex/(?P <userid>[0-9]+)/name/(?P<username>\\w+)/abc", new RegexTestAction());
 		
-		Server server = new Server(8080, new RtBasic(maps));
+		Server server = new Server(8080, new RtRegex(maps));
 		
 		server.start(Constant.Exit.NEVER_EXIT);
 	}

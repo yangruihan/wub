@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.yangruihan.wub.Middleware;
 import com.yangruihan.wub.Route;
 import com.yangruihan.wub.constant.Constant;
 import com.yangruihan.wub.middleware.DateMiddleware;
-import com.yangruihan.wub.middleware.Middleware;
 import com.yangruihan.wub.middleware.ServerMiddleware;
+import com.yangruihan.wub.route.RtRegex;
 
 /**
  * 服务器
@@ -38,6 +39,16 @@ public class Server {
 	/**
 	 * Ctor.
 	 * @param port
+	 * @param route
+	 * @throws IOException
+	 */
+	public Server(int port, Route route) throws IOException {
+		this(port, new Back(route));
+	}
+	
+	/**
+	 * Ctor.
+	 * @param port
 	 * @param back
 	 * @throws IOException
 	 */
@@ -49,7 +60,7 @@ public class Server {
 		// 添加默认的中间件
 		addDefaultMiddleware();
 	}
-
+	
 	/**
 	 * 添加默认的中间件
 	 */
@@ -58,15 +69,6 @@ public class Server {
 		this.middlewares.add(new ServerMiddleware());
 	}
 	
-	/**
-	 * Ctor.
-	 * @param port
-	 * @param route
-	 * @throws IOException
-	 */
-	public Server(int port, Route route) throws IOException {
-		this(port, new Back(route));
-	}
 	
 	/**
 	 * 添加中间件

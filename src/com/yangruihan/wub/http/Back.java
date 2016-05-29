@@ -5,11 +5,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
 
+import com.yangruihan.wub.Middleware;
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.RequestWrap;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.Route;
-import com.yangruihan.wub.middleware.Middleware;
 
 /**
  * 后端类

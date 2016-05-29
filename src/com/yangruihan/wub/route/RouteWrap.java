@@ -7,7 +7,6 @@ import java.util.Map;
 import com.yangruihan.wub.Action;
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.Response;
-import com.yangruihan.wub.ResponseWrap;
 import com.yangruihan.wub.Route;
 import com.yangruihan.wub.response.RsNotFound;
 
@@ -16,19 +15,24 @@ import com.yangruihan.wub.response.RsNotFound;
  * @author Yrh
  *
  */
-public class RtBasic extends Route {
+public class RouteWrap implements Route {
 
+	/**
+	 * URL 映射
+	 */
+	protected Map<String, Action> maps;
+	
 	/**
 	 * Ctor.
 	 * @param maps
 	 */
-	public RtBasic(Map<String, Action> maps) {
-		super(maps);
+	public RouteWrap(Map<String, Action> maps) {
+		this.maps = maps;
 	}
 
 	@Override
 	public Response route(Request request) throws IOException {
-		String uri = request.getUri().split("\\?")[0];
+		String uri = request.getUri().split("\\?")[0].trim();
 		
 		Iterator<Map.Entry<String, Action>> iter = maps.entrySet().iterator();
 		while (iter.hasNext()) {
