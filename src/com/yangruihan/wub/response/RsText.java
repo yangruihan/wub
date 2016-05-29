@@ -3,7 +3,6 @@ package com.yangruihan.wub.response;
 import java.io.IOException;
 
 import com.yangruihan.wub.Request;
-import com.yangruihan.wub.Response;
 import com.yangruihan.wub.ResponseWrap;
 
 /**

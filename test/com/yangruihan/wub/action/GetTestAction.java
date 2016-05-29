@@ -6,7 +6,6 @@ import com.yangruihan.wub.Action;
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.response.RsFile;
-import com.yangruihan.wub.util.FileHelper;
 
 public class GetTestAction implements Action {
 

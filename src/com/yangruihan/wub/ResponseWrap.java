@@ -2,12 +2,8 @@ package com.yangruihan.wub;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import com.yangruihan.wub.constant.Constant;
 
@@ -80,9 +76,11 @@ public class ResponseWrap implements Response {
 	 * @throws IOException
 	 */
 	@Override
-	public void setResponse() throws IOException {
+	public Response setResponse() throws IOException {
 		setHeader();
 		setBody();
+		
+		return this;
 	}
 
 	/**
@@ -93,19 +91,23 @@ public class ResponseWrap implements Response {
 	 * @throws IOException
 	 */
 	@Override
-	public void setResponse(String header, byte[] body) throws IOException {
+	public Response setResponse(String header, byte[] body) throws IOException {
 		setHeader(header);
 		setBody(body);
+		
+		return this;
 	}
 
 	/**
 	 * 设置响应头
 	 */
 	@Override
-	public void setHeader() {
+	public Response setHeader() {
 		if (this.header.size() != 0) {
 			this.header.clear();
 		}
+		
+		return this;
 	}
 
 	/**
@@ -114,9 +116,9 @@ public class ResponseWrap implements Response {
 	 * @param header
 	 */
 	@Override
-	public void setHeader(String header) {
+	public Response setHeader(String header) {
 		if (header == null)
-			return;
+			return this;
 
 		if (this.header.size() != 0) {
 			this.header.clear();
@@ -129,16 +131,20 @@ public class ResponseWrap implements Response {
 				this.header.add(h);
 			}
 		}
+		
+		return this;
 	}
 
 	/**
 	 * 设置响应体
 	 */
 	@Override
-	public void setBody() {
+	public Response setBody() {
 		if (this.body.length != 0) {
 			this.body = new byte[0];
 		}
+		
+		return this;
 	}
 
 	/**
@@ -147,8 +153,10 @@ public class ResponseWrap implements Response {
 	 * @param body
 	 */
 	@Override
-	public void setBody(byte[] body) {
+	public Response setBody(byte[] body) {
 		this.body = body;
+		
+		return this;
 	}
 
 	/**
@@ -175,25 +183,29 @@ public class ResponseWrap implements Response {
 	}
 
 	@Override
-	public void addHeader(String key, String value, boolean flag) {
+	public Response addHeader(String key, String value, boolean flag) {
 		if (flag == true) {
 			// 先将已存在的头删除，避免冗余
 			deleteHeader(key);
 		}
 		this.header.add(String.format("%s: %s", key, value));
+		
+		return this;
 	}
 
 	@Override
-	public void addHeader(String key, String value) {
+	public Response addHeader(String key, String value) {
 		// 先将已存在的头删除，避免冗余
 		deleteHeader(key);
 		this.header.add(String.format("%s: %s", key, value));
+		
+		return this;
 	}
 
 	@Override
-	public void deleteHeader(String key) {
+	public Response deleteHeader(String key) {
 		if (this.header.size() == 0)
-			return;
+			return this;
 
 		int del = -1;
 		for (int i = 1; i < this.header.size(); i++) {
@@ -206,10 +218,12 @@ public class ResponseWrap implements Response {
 
 		if (del != -1)
 			this.header.remove(del);
+		
+		return this;
 	}
 
 	@Override
-	public void addStatus(int status, String describe) {
+	public Response addStatus(int status, String describe) {
 		String s = String.format("%s %d %s", Constant.Http.HTTP_VERSION, status, describe);
 		if (this.header.size() == 0) {
 			this.header.add(s);
@@ -219,10 +233,12 @@ public class ResponseWrap implements Response {
 			this.header.remove(0);
 			this.header.add(s);
 		}
+		
+		return this;
 	}
 
 	@Override
-	public void addCookie(Cookie cookie) {
+	public Response addCookie(Cookie cookie) {
 		StringBuilder setCookie = new StringBuilder();
 		setCookie.append(cookie.getName() + "=" + cookie.getValue() + "; ");
 
@@ -255,6 +271,8 @@ public class ResponseWrap implements Response {
 		}
 
 		addHeader("Set-Cookie", setCookie.toString(), false);
+		
+		return this;
 	}
 
 	// /**

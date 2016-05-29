@@ -8,7 +8,6 @@ import com.yangruihan.wub.Action;
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.response.RsText;
-import com.yangruihan.wub.util.FileHelper;
 import com.yangruihan.wub.view.TemplateView;
 
 public class UserSubmitAction implements Action {

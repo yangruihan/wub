@@ -26,7 +26,7 @@ public interface Response {
 	 * 设置响应
 	 * @throws IOException
 	 */
-	void setResponse() throws IOException;
+	Response setResponse() throws IOException;
 	
 	/**
 	 * 设置响应
@@ -34,31 +34,31 @@ public interface Response {
 	 * @param body
 	 * @throws IOException
 	 */
-	void setResponse(String header, byte[] body) throws IOException;
+	Response setResponse(String header, byte[] body) throws IOException;
 
 	/**
 	 * 设置头
 	 */
-	void setHeader();
+	Response setHeader();
 	
 	/**
 	 * 设置头
 	 * @param header
 	 */
-	void setHeader(String header);
+	Response setHeader(String header);
 	
 	/**
 	 * 添加返回状态
 	 * @param str
 	 */
-	void addStatus(int status, String describe);
+	Response addStatus(int status, String describe);
 	
 	/**
 	 * 添加一个头部（如果已存在，则先删除）
 	 * @param key
 	 * @param value
 	 */
-	void addHeader(String key, String value);
+	Response addHeader(String key, String value);
 	
 	/**
 	 * 添加一个头部
@@ -66,24 +66,24 @@ public interface Response {
 	 * @param value
 	 * @param flag 如果已存在是否删除
 	 */
-	void addHeader(String key, String value, boolean flag);
+	Response addHeader(String key, String value, boolean flag);
 	
 	/**
 	 * 删除一个头部
 	 * @param key
 	 */
-	void deleteHeader(String key);
+	Response deleteHeader(String key);
 	
 	/**
 	 * 设置身体
 	 */
-	void setBody();
+	Response setBody();
 	
 	/**
 	 * 设置身体
 	 * @param body
 	 */
-	void setBody(byte[] body);
+	Response setBody(byte[] body);
 	
 	/**
 	 * 设置输出流
@@ -95,7 +95,7 @@ public interface Response {
 	 * 添加 Cookie
 	 * @param cookie
 	 */
-	void addCookie(Cookie cookie);
+	Response addCookie(Cookie cookie);
 	
 	/**
 	 * 得到请求

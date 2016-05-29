@@ -55,7 +55,7 @@ public class RsFile extends ResponseWrap {
 	}
 
 	@Override
-	public void setResponse() throws IOException {
+	public Response setResponse() throws IOException {
 		String content = FileHelper.getContent(this.uri);
 		if (content != null) {
 			setBody(content.getBytes());
@@ -71,5 +71,6 @@ public class RsFile extends ResponseWrap {
 			this.setBody("<h1>File Not Found</h1>".getBytes());
 		}
 
+		return this;
 	}
 }

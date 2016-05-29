@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.yangruihan.wub.Action;
 import com.yangruihan.wub.Request;
-import com.yangruihan.wub.RequestWrap;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.ResponseWrap;
 import com.yangruihan.wub.Route;

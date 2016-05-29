@@ -14,8 +14,7 @@ public class CookieTestAction implements Action {
 	public Response action(Request request) throws IOException {
 		RsText rsText = new RsText(request, "Hello, World");
 		Cookie cookie = new Cookie("test", "123");
-		rsText.addCookie(cookie);
-		return rsText;
+		return rsText.addCookie(cookie).addCookie(new Cookie("test2", "456"));
 	}
 
 }
