@@ -3,10 +3,15 @@ package com.yangruihan.wub.http;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.yangruihan.wub.Route;
 import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.middleware.DateMiddleware;
+import com.yangruihan.wub.middleware.Middleware;
+import com.yangruihan.wub.middleware.ServerMiddleware;
 
 /**
  * 服务器
@@ -26,6 +31,11 @@ public class Server {
 	private Back back;
 	
 	/**
+	 * 中间件
+	 */
+	private List<Middleware> middlewares;
+	
+	/**
 	 * Ctor.
 	 * @param port
 	 * @param back
@@ -34,6 +44,18 @@ public class Server {
 	public Server(int port, Back back) throws IOException {
 		this.serverSocket = new ServerSocket(port);
 		this.back = back;
+		this.middlewares = new ArrayList<>();
+		
+		// 添加默认的中间件
+		addDefaultMiddleware();
+	}
+
+	/**
+	 * 添加默认的中间件
+	 */
+	private void addDefaultMiddleware() {
+		this.middlewares.add(new DateMiddleware());
+		this.middlewares.add(new ServerMiddleware());
 	}
 	
 	/**
@@ -43,8 +65,31 @@ public class Server {
 	 * @throws IOException
 	 */
 	public Server(int port, Route route) throws IOException {
-		this.serverSocket = new ServerSocket(port);
-		this.back = new Back(route);
+		this(port, new Back(route));
+	}
+	
+	/**
+	 * 添加中间件
+	 * @param mid
+	 * @return
+	 */
+	public Server addMiddleware(Middleware mid) {
+		if (mid != null) {
+			this.middlewares.add(mid);
+		}
+		return this;
+	}
+	
+	/**
+	 * 删除中间件
+	 * @param mid
+	 * @return
+	 */
+	public Server deleteMiddleware(Middleware mid) {
+		if (mid != null) {
+			this.middlewares.remove(mid);
+		}
+		return this;
 	}
 	
 	/**
@@ -68,7 +113,7 @@ public class Server {
 	
 	private void loop(ServerSocket socket) throws IOException {
 		try {
-			this.back.accept(socket.accept());
+			this.back.accept(socket.accept(), this.middlewares);
 		} catch (final SocketTimeoutException ex) {
             assert ex != null;
         }

@@ -1,7 +1,5 @@
 package com.yangruihan.wub.response;
 
-import java.io.IOException;
-
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.ResponseWrap;
 
@@ -12,9 +10,9 @@ import com.yangruihan.wub.ResponseWrap;
  *
  */
 public class RsText extends ResponseWrap {
-
+	
 	/**
-	 * 文本
+	 * 文本内容
 	 */
 	private String text;
 
@@ -27,19 +25,20 @@ public class RsText extends ResponseWrap {
 	public RsText(Request request, String text) {
 		super(request);
 		this.text = text;
-	}
-
-	@Override
-	public void send() throws IOException {
-		if (this.text != null) {
-			this.addStatus(200, "OK");
+		
+		// 设置 body
+		if (text != null && !text.isEmpty()) {
+			this.setStatus(200, "OK");
 			this.addHeader("Content-type", "text/html; charset=utf-8");
-			this.setBody(this.text.getBytes());
+			this.setBody(text.getBytes());
 		} else {
-			this.addStatus(404, "Not Found");
+			this.setStatus(404, "Not Found");
 			this.addHeader("Content-type", "text/html; charset=utf-8");
 			this.setBody("<div>Resource Not Found</div>".getBytes());
 		}
-		super.send();
+	}
+
+	public String getText() {
+		return text;
 	}
 }

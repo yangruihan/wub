@@ -223,7 +223,7 @@ public class ResponseWrap implements Response {
 	}
 
 	@Override
-	public Response addStatus(int status, String describe) {
+	public Response setStatus(int status, String describe) {
 		String s = String.format("%s %d %s", Constant.Http.HTTP_VERSION, status, describe);
 		if (this.header.size() == 0) {
 			this.header.add(s);

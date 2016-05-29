@@ -9,6 +9,7 @@ import com.yangruihan.wub.Request;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.ResponseWrap;
 import com.yangruihan.wub.Route;
+import com.yangruihan.wub.response.RsNotFound;
 
 /**
  * 基础路由类
@@ -39,6 +40,7 @@ public class RtBasic extends Route {
 			}
 		}
 		
-		return new ResponseWrap(request);
+		// 默认返回没有找到页面的响应
+		return new RsNotFound(request);
 	}
 }

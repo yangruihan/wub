@@ -30,10 +30,10 @@ public class RsFile extends ResponseWrap {
 	 * 
 	 * @param request
 	 * @param uri
+	 * @throws IOException 
 	 */
-	public RsFile(Request request, String uri) {
-		super(request);
-		this.uri = uri;
+	public RsFile(Request request, String uri) throws IOException {
+		this(request, uri, null);
 	}
 	
 	/**
@@ -41,36 +41,36 @@ public class RsFile extends ResponseWrap {
 	 * @param request
 	 * @param uri
 	 * @param contentType
+	 * @throws IOException 
 	 */
-	public RsFile(Request request, String uri, String contentType) {
+	public RsFile(Request request, String uri, String contentType) throws IOException {
 		super(request);
 		this.uri = uri;
-		this.contentType = contentType;
-	}
-
-	@Override
-	public void send() throws IOException {
-		setResponse();
-		super.send();
-	}
-
-	@Override
-	public Response setResponse() throws IOException {
+		if (contentType != null && !contentType.isEmpty()) {
+			this.contentType = contentType;
+		}
+		
 		String content = FileHelper.getContent(this.uri);
 		if (content != null) {
+			this.setStatus(200, "OK");
 			setBody(content.getBytes());
-			this.addStatus(200, "OK");
 			if (this.contentType != null && !this.contentType.isEmpty()) {
 				this.addHeader("Content-Type", this.contentType);
 			}
 		} else {
 			// 找不到文件
-			this.addStatus(404, "File NOT Fount");
+			this.setStatus(404, "File NOT Fount");
 			this.addHeader("Content-Type", "text/html; charset=utf-8");
 			this.addHeader("Content-Length", "23");
 			this.setBody("<h1>File Not Found</h1>".getBytes());
 		}
+	}
 
-		return this;
+	public String getUri() {
+		return uri;
+	}
+
+	public String getContentType() {
+		return contentType;
 	}
 }

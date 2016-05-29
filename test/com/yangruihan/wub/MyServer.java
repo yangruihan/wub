@@ -14,6 +14,7 @@ import com.yangruihan.wub.action.UserAction;
 import com.yangruihan.wub.action.UserSubmitAction;
 import com.yangruihan.wub.constant.Constant;
 import com.yangruihan.wub.http.Server;
+import com.yangruihan.wub.middleware.DateMiddlewareTestAction;
 import com.yangruihan.wub.response.RsFile;
 import com.yangruihan.wub.route.RtBasic;
 
@@ -38,6 +39,7 @@ public class MyServer {
 		});
 		maps.put("/testCookie", new CookieTestAction());
 		maps.put("/testCookie2", new CookieTest2Action());
+		maps.put("/testDateMid", new DateMiddlewareTestAction());
 		
 		Server server = new Server(8080, new RtBasic(maps));
 		

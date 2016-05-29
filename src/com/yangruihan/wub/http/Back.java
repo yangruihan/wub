@@ -3,11 +3,13 @@ package com.yangruihan.wub.http;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.RequestWrap;
 import com.yangruihan.wub.Response;
 import com.yangruihan.wub.Route;
+import com.yangruihan.wub.middleware.Middleware;
 
 /**
  * 后端类
@@ -21,11 +23,21 @@ public class Back {
 	 */
 	private Route route;
 	
+	/**
+	 * Ctor.
+	 * @param route
+	 */
 	public Back(Route route) {
 		this.route = route;
 	}
 	
-	public void accept(Socket socket) throws IOException {
+	/**
+	 * 接收一个socket，进行路由，中间件处理后，将响应发送到输出流
+	 * @param socket
+	 * @param middlewares
+	 * @throws IOException
+	 */
+	public void accept(Socket socket, List<Middleware> middlewares) throws IOException {
 		// 得到 request
 		Request request = new RequestWrap(socket.getInputStream());
 		
@@ -34,6 +46,11 @@ public class Back {
 		
 		// 路由
 		Response response = this.route.route(request);
+		
+		// 中间件进行处理
+		for (Middleware middleware : middlewares) {
+			middleware.processResponse(response);
+		}
 		
 		// 设置输出流
 		response.setOutputStream(output);

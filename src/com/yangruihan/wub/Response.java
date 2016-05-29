@@ -48,10 +48,10 @@ public interface Response {
 	Response setHeader(String header);
 	
 	/**
-	 * 添加返回状态
+	 * 设置返回状态
 	 * @param str
 	 */
-	Response addStatus(int status, String describe);
+	Response setStatus(int status, String describe);
 	
 	/**
 	 * 添加一个头部（如果已存在，则先删除）
