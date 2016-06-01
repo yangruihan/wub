@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import com.yangruihan.wub.Middleware;
 import com.yangruihan.wub.Route;
 import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.middleware.ContentLenMiddleware;
 import com.yangruihan.wub.middleware.DateMiddleware;
 import com.yangruihan.wub.middleware.ServerMiddleware;
 import com.yangruihan.wub.route.RtRegex;
@@ -29,7 +30,7 @@ public class Server {
 	/**
 	 * 后端
 	 */
-	private Back back;
+	private Container container;
 	
 	/**
 	 * 中间件
@@ -43,7 +44,7 @@ public class Server {
 	 * @throws IOException
 	 */
 	public Server(int port, Route route) throws IOException {
-		this(port, new Back(route));
+		this(port, new Container(route));
 	}
 	
 	/**
@@ -52,9 +53,9 @@ public class Server {
 	 * @param back
 	 * @throws IOException
 	 */
-	public Server(int port, Back back) throws IOException {
+	public Server(int port, Container back) throws IOException {
 		this.serverSocket = new ServerSocket(port);
-		this.back = back;
+		this.container = back;
 		this.middlewares = new ArrayList<>();
 		
 		// 添加默认的中间件
@@ -67,6 +68,7 @@ public class Server {
 	private void addDefaultMiddleware() {
 		this.middlewares.add(new DateMiddleware());
 		this.middlewares.add(new ServerMiddleware());
+		this.middlewares.add(new ContentLenMiddleware());
 	}
 	
 	
@@ -115,7 +117,7 @@ public class Server {
 	
 	private void loop(ServerSocket socket) throws IOException {
 		try {
-			this.back.accept(socket.accept(), this.middlewares);
+			this.container.accept(socket.accept(), this.middlewares);
 		} catch (final SocketTimeoutException ex) {
             assert ex != null;
         }

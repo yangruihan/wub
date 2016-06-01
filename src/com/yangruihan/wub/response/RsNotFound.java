@@ -2,6 +2,7 @@ package com.yangruihan.wub.response;
 
 import com.yangruihan.wub.Request;
 import com.yangruihan.wub.ResponseWrap;
+import com.yangruihan.wub.constant.Constant;
 
 /**
  * 返回没有找到的响应
@@ -32,7 +33,7 @@ public class RsNotFound extends ResponseWrap {
 		super(request);
 		this.errorInfo = errorInfo;
 		
-		this.setStatus(404, "Not Found");
+		this.setStatus(Constant.Response_status.NOT_FOUND, "Not Found");
 		this.addHeader("Content-type", "text/html; charset=utf-8");
 		if (errorInfo != null && !errorInfo.isEmpty()) {
 			this.setBody(errorInfo.getBytes());

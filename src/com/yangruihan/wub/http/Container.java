@@ -12,11 +12,11 @@ import com.yangruihan.wub.Response;
 import com.yangruihan.wub.Route;
 
 /**
- * 后端类
+ * 容器类
  * @author Yrh
  *
  */
-public class Back {
+public class Container {
 
 	/**
 	 * 路由
@@ -27,7 +27,7 @@ public class Back {
 	 * Ctor.
 	 * @param route
 	 */
-	public Back(Route route) {
+	public Container(Route route) {
 		this.route = route;
 	}
 	
