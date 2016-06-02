@@ -28,7 +28,7 @@ public class Server {
 	private ServerSocket serverSocket;
 	
 	/**
-	 * 后端
+	 * 容器
 	 */
 	private Container container;
 	
@@ -44,7 +44,7 @@ public class Server {
 	 * @throws IOException
 	 */
 	public Server(int port, Route route) throws IOException {
-		this(port, new Container(route));
+		this(port, Container.getInstance().setRoute(route));
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class Server {
 	 * @param back
 	 * @throws IOException
 	 */
-	public Server(int port, Container back) throws IOException {
+	private Server(int port, Container back) throws IOException {
 		this.serverSocket = new ServerSocket(port);
 		this.container = back;
 		this.middlewares = new ArrayList<>();

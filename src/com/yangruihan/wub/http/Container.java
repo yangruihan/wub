@@ -17,6 +17,37 @@ import com.yangruihan.wub.Route;
  *
  */
 public class Container {
+	
+	/**
+	 * 单例模式
+	 */
+	private static Container instance;
+	private static byte[] lock = new byte[1];
+	
+	/**
+	 * 获得实例方法，线程安全的
+	 * @return 实例
+	 */
+	public static Container getInstance() {
+		if (instance == null) {
+			synchronized (lock) {
+				if (instance == null) {
+					instance = new Container();
+				}
+			}
+		}
+		
+		return instance;
+	}
+	
+	/**
+	 * 设置路由类
+	 * @param route
+	 */
+	public Container setRoute(Route route) {
+		this.route = route;
+		return this;
+	}
 
 	/**
 	 * 路由
@@ -27,8 +58,7 @@ public class Container {
 	 * Ctor.
 	 * @param route
 	 */
-	public Container(Route route) {
-		this.route = route;
+	private Container() {
 	}
 	
 	/**
