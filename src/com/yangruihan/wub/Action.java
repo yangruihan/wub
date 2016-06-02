@@ -2,6 +2,9 @@ package com.yangruihan.wub;
 
 import java.io.IOException;
 
+import com.yangruihan.wub.request.Request;
+import com.yangruihan.wub.response.Response;
+
 /**
  * 动作接口
  * @author Yrh

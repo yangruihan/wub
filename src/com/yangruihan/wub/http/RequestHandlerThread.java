@@ -5,11 +5,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import com.yangruihan.wub.Middleware;
-import com.yangruihan.wub.Request;
-import com.yangruihan.wub.RequestWrap;
-import com.yangruihan.wub.Response;
-import com.yangruihan.wub.Route;
+import com.yangruihan.wub.middleware.Middleware;
+import com.yangruihan.wub.request.Request;
+import com.yangruihan.wub.request.RequestWrap;
+import com.yangruihan.wub.response.Response;
+import com.yangruihan.wub.response.RsNotFound;
+import com.yangruihan.wub.route.Route;
 
 /**
  * 请求处理线程
@@ -63,6 +64,12 @@ public class RequestHandlerThread extends Thread {
 			
 			// 路由
 			Response response = this.route.route(request);
+			
+			// 如果响应为空
+			if (response == null) {
+				// 则生成一个 Not Found 响应
+				response = new RsNotFound(request);
+			}
 			
 			// 中间件进行处理
 			for (Middleware middleware : middlewares) {

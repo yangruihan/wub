@@ -1,4 +1,6 @@
-package com.yangruihan.wub;
+package com.yangruihan.wub.middleware;
+
+import com.yangruihan.wub.response.Response;
 
 /**
  * 中间件接口

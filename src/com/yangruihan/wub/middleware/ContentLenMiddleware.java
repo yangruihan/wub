@@ -1,7 +1,6 @@
 package com.yangruihan.wub.middleware;
 
-import com.yangruihan.wub.Middleware;
-import com.yangruihan.wub.Response;
+import com.yangruihan.wub.response.Response;
 
 /**
  * 添加内容长度

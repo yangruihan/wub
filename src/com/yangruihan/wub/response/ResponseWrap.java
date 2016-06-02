@@ -1,4 +1,4 @@
-package com.yangruihan.wub;
+package com.yangruihan.wub.response;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.request.Cookie;
+import com.yangruihan.wub.request.Request;
 
 /**
  * 响应包装类

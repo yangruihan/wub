@@ -1,4 +1,4 @@
-package com.yangruihan.wub;
+package com.yangruihan.wub.request;
 
 import java.util.List;
 

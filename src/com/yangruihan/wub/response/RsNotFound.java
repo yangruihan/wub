@@ -1,8 +1,7 @@
 package com.yangruihan.wub.response;
 
-import com.yangruihan.wub.Request;
-import com.yangruihan.wub.ResponseWrap;
 import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.request.Request;
 
 /**
  * 返回没有找到的响应

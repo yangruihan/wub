@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.yangruihan.wub.Action;
-import com.yangruihan.wub.Request;
-import com.yangruihan.wub.Response;
+import com.yangruihan.wub.request.Request;
+import com.yangruihan.wub.response.Response;
 import com.yangruihan.wub.response.RsText;
 import com.yangruihan.wub.view.TemplateView;
 
