@@ -38,13 +38,18 @@ public class Server {
 	private List<Middleware> middlewares;
 	
 	/**
+	 * 路由
+	 */
+	private Route route;
+	
+	/**
 	 * Ctor.
 	 * @param port
 	 * @param route
 	 * @throws IOException
 	 */
 	public Server(int port, Route route) throws IOException {
-		this(port, Container.getInstance().setRoute(route));
+		this(port, route, Container.getInstance());
 	}
 	
 	/**
@@ -53,9 +58,10 @@ public class Server {
 	 * @param back
 	 * @throws IOException
 	 */
-	private Server(int port, Container back) throws IOException {
+	private Server(int port, Route route, Container container) throws IOException {
 		this.serverSocket = new ServerSocket(port);
-		this.container = back;
+		this.route = route;
+		this.container = container;
 		this.middlewares = new ArrayList<>();
 		
 		// 添加默认的中间件
@@ -117,7 +123,8 @@ public class Server {
 	
 	private void loop(ServerSocket socket) throws IOException {
 		try {
-			this.container.accept(socket.accept(), this.middlewares);
+			// 启动一个请求处理线程
+			new RequestHandlerThread(socket.accept(), middlewares, route, container).start();
 		} catch (final SocketTimeoutException ex) {
             assert ex != null;
         }
