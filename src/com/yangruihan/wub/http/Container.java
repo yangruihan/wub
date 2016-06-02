@@ -1,15 +1,6 @@
 package com.yangruihan.wub.http;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.List;
-
-import com.yangruihan.wub.Middleware;
-import com.yangruihan.wub.Request;
-import com.yangruihan.wub.RequestWrap;
-import com.yangruihan.wub.Response;
-import com.yangruihan.wub.Route;
+import java.util.Map;
 
 /**
  * 容器类
