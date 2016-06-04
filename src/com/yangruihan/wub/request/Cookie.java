@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 /**
- * Http Cookie 类
+ * Http Cookie类
  * 
  * @author Yrh
  *
@@ -70,6 +70,10 @@ public class Cookie implements Cloneable, Serializable {
         comment = purpose;
     }
 	
+	/**
+	 * 得到这个Cookie的特殊目的
+	 * @return
+	 */
 	public String getComment() {
         return comment;
     }
@@ -82,18 +86,26 @@ public class Cookie implements Cloneable, Serializable {
         this.domain = domain.toLowerCase(Locale.ENGLISH); // IE allegedly needs this
     }
 	
+	/**
+	 * 得到表现域
+	 * @return
+	 */
 	public String getDomain() {
         return domain;
     }
 	
 	/**
-	 * 设置最大年龄
+	 * 设置最大存活时间
 	 * @param expiry
 	 */
 	public void setMaxAge(int expiry) {
         maxAge = expiry;
     }
 	
+	/**
+	 * 得到最大存活时间
+	 * @return
+	 */
 	public int getMaxAge() {
         return maxAge;
     }
@@ -106,22 +118,34 @@ public class Cookie implements Cloneable, Serializable {
         path = uri;
     }
 	
+	/**
+	 * 得到路径
+	 * @return
+	 */
 	public String getPath() {
         return path;
     }
 
 	/**
-	 * 表明浏览器是否需要使用一个安全的协议传送Cookie
+	 * 设置浏览器是否需要使用一个安全的协议传送Cookie
 	 * @param flag
 	 */
 	public void setSecure(boolean flag) {
         secure = flag;
     }
 	
+	/**
+	 * 表明浏览器是否需要使用一个安全的协议传送Cookie
+	 * @return true 使用， false 不适用
+	 */
 	public boolean getSecure() {
         return secure;
     }
 	
+	/**
+	 * 得到Cookie的名字
+	 * @return
+	 */
 	public String getName() {
         return name;
     }
@@ -134,6 +158,10 @@ public class Cookie implements Cloneable, Serializable {
         value = newValue;
     }
 	
+	/**
+	 * 得到值
+	 * @return
+	 */
 	public String getValue() {
         return value;
     }
@@ -146,6 +174,10 @@ public class Cookie implements Cloneable, Serializable {
         version = v;
     }
 	
+	/**
+	 * 得到版本信息
+	 * @return
+	 */
 	public int getVersion() {
         return version;
     }
@@ -158,6 +190,10 @@ public class Cookie implements Cloneable, Serializable {
         this.isHttpOnly = isHttpOnly;
     }
 	
+	/**
+	 * 得到是否 HttpOnly
+	 * @return
+	 */
 	public boolean isHttpOnly() {
         return isHttpOnly;
     }
