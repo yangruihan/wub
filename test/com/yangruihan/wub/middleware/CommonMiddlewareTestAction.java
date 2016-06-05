@@ -8,12 +8,12 @@ import com.yangruihan.wub.request.Request;
 import com.yangruihan.wub.response.Response;
 import com.yangruihan.wub.response.RsText;
 
-public class DateMiddlewareTestAction implements Action {
+public class CommonMiddlewareTestAction implements Action {
 
 	@Override
 	public Response action(Request request) throws IOException {
-		DateMiddleware dateMiddleware = new DateMiddleware();
-		return dateMiddleware.processResponse(new RsText(request, new Date().toString()));
+		CommonMiddleware commonMiddleware = new CommonMiddleware();
+		return commonMiddleware.processResponse(new RsText(request, new Date().toString()));
 	}
 	
 }

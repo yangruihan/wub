@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.yangruihan.wub.constant.Constant;
-import com.yangruihan.wub.middleware.ContentLenMiddleware;
-import com.yangruihan.wub.middleware.DateMiddleware;
+import com.yangruihan.wub.middleware.CommonMiddleware;
 import com.yangruihan.wub.middleware.Middleware;
 import com.yangruihan.wub.middleware.ServerMiddleware;
 import com.yangruihan.wub.route.Route;
@@ -72,9 +71,8 @@ public class Server {
 	 * 添加默认的中间件
 	 */
 	private void addDefaultMiddleware() {
-		this.middlewares.add(new DateMiddleware());
+		this.middlewares.add(new CommonMiddleware());
 		this.middlewares.add(new ServerMiddleware());
-		this.middlewares.add(new ContentLenMiddleware());
 	}
 	
 	
