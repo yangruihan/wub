@@ -2,7 +2,7 @@ package com.yangruihan.wub.response;
 
 import java.io.IOException;
 
-import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.constant.C;
 import com.yangruihan.wub.request.Request;
 import com.yangruihan.wub.util.FileHelper;
 
@@ -51,14 +51,14 @@ public class RsFile extends ResponseWrap {
 		
 		String content = FileHelper.getContent(this.uri);
 		if (content != null) {
-			this.setStatus(Constant.Response_status.OK, "OK");
+			this.setStatus(C.Response_status.OK, "OK");
 			setBody(content.getBytes());
 			if (this.contentType != null && !this.contentType.isEmpty()) {
 				this.addHeader("Content-Type", this.contentType);
 			}
 		} else {
 			// 找不到文件
-			this.setStatus(Constant.Response_status.NOT_FOUND, "File NOT Fount");
+			this.setStatus(C.Response_status.NOT_FOUND, "File NOT Fount");
 			this.addHeader("Content-Type", "text/html; charset=utf-8");
 			this.addHeader("Content-Length", "23");
 			this.setBody("<h1>File Not Found</h1>".getBytes());

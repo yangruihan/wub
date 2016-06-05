@@ -34,6 +34,12 @@ public interface Request {
 	String getUri();
 	
 	/**
+	 * 得到请求方法
+	 * @return
+	 */
+	String getMethod();
+	
+	/**
 	 * 得到所有参数
 	 * @return
 	 */

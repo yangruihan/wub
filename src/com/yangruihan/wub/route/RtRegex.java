@@ -26,8 +26,8 @@ public class RtRegex extends RouteWrap {
 	 * 
 	 * @param maps
 	 */
-	public RtRegex(Map<String, Action> maps) {
-		super(maps);
+	public RtRegex() {
+		super();
 	}
 
 	@Override
@@ -43,7 +43,16 @@ public class RtRegex extends RouteWrap {
 		while (iter.hasNext()) {
 			Map.Entry<String, Action> entry = iter.next();
 
-			String regexUrl = entry.getKey();
+			String key = entry.getKey();
+			String regexUrl = key.split(":")[0];
+			String method = key.split(":")[1];
+			
+			/**
+			 * 如果方法不匹配的话直接验证下一个
+			 */
+			if (!method.equals(request.getMethod())) {
+				continue;
+			}
 
 			/**
 			 * 寻找用户自定义 Url 中的参数

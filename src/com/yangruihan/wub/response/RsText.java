@@ -1,6 +1,6 @@
 package com.yangruihan.wub.response;
 
-import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.constant.C;
 import com.yangruihan.wub.request.Request;
 
 /**
@@ -28,11 +28,11 @@ public class RsText extends ResponseWrap {
 		
 		// 设置 body
 		if (text != null && !text.isEmpty()) {
-			this.setStatus(Constant.Response_status.OK, "OK");
+			this.setStatus(C.Response_status.OK, "OK");
 			this.addHeader("Content-type", "text/html; charset=utf-8");
 			this.setBody(text.getBytes());
 		} else {
-			this.setStatus(Constant.Response_status.NOT_FOUND, "Not Found");
+			this.setStatus(C.Response_status.NOT_FOUND, "Not Found");
 			this.addHeader("Content-type", "text/html; charset=utf-8");
 			this.setBody("<div>Resource Not Found</div>".getBytes());
 		}

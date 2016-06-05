@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.constant.C;
 import com.yangruihan.wub.middleware.CommonMiddleware;
 import com.yangruihan.wub.middleware.Middleware;
 import com.yangruihan.wub.middleware.ServerMiddleware;
 import com.yangruihan.wub.route.Route;
 import com.yangruihan.wub.route.RtRegex;
+import com.yangruihan.wub.route.Urls;
 
 /**
  * 服务器
@@ -43,11 +44,28 @@ public class Server {
 	
 	/**
 	 * Ctor.
+	 * @throws IOException
+	 */
+	public Server() throws IOException {
+		this(8080);
+	}
+	
+	/**
+	 * Ctor.
+	 * @param port
+	 * @throws IOException 
+	 */
+	public Server(int port) throws IOException {
+		this(port, new RtRegex());
+	}
+	
+	/**
+	 * Ctor.
 	 * @param port
 	 * @param route
 	 * @throws IOException
 	 */
-	public Server(int port, Route route) throws IOException {
+	private Server(int port, Route route) throws IOException {
 		this(port, route, Container.getInstance());
 	}
 	
@@ -57,7 +75,7 @@ public class Server {
 	 * @param back
 	 * @throws IOException
 	 */
-	private Server(int port, Route route, Container container) throws IOException {
+	private Server(int port, Route route, Container container) throws IOException{
 		this.serverSocket = new ServerSocket(port);
 		this.route = route;
 		this.container = container;
@@ -101,6 +119,26 @@ public class Server {
 	}
 	
 	/**
+	 * 添加Url映射
+	 * @param urls
+	 * @return
+	 */
+	public Server addUrls(Urls urls) {
+		urls.addUrls(route);
+		return this;
+	}
+	
+	/**
+	 * 设置路由类方法
+	 * @param route
+	 * @return
+	 */
+	public Server setRoute(Route route) {
+		this.route = route;
+		return this;
+	}
+	
+	/**
 	 * 开启主循环
 	 * @param exit
 	 */
@@ -113,7 +151,7 @@ public class Server {
 		try {
 			do {
 				this.loop(this.serverSocket);
-			} while (exit == Constant.Exit.NEVER_EXIT ? true : false);
+			} while (exit == C.Exit.NEVER_EXIT ? true : false);
 		} finally {
 			this.serverSocket.close();
 		}

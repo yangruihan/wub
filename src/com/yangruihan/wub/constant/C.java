@@ -7,7 +7,7 @@ import java.io.File;
  * @author Yrh
  *
  */
-public interface Constant {
+public interface C {
 
 	/**
 	 * 系统根目录
@@ -21,6 +21,9 @@ public interface Constant {
 	 */
 	interface Http {
 		static final String HTTP_VERSION = "HTTP/1.1";
+		
+		static final String GET = "get";
+		static final String POST = "post";
 	}
 	
 	/**

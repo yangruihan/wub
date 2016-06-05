@@ -42,6 +42,11 @@ public class RequestWrap implements Request {
 	private String uri;
 	
 	/**
+	 * 请求方法
+	 */
+	private String method;
+	
+	/**
 	 * 所有参数
 	 */
 	private Map<String, String> parameters;
@@ -68,6 +73,7 @@ public class RequestWrap implements Request {
 		this.body = new byte[0];
 		this.cookies = new HashMap<>();
 		this.uri = "";
+		this.method = "";
 		this.parameters = new HashMap<>();
 		this.postParameters = new HashMap<>();
 		this.getParameters = new HashMap<>();
@@ -98,6 +104,9 @@ public class RequestWrap implements Request {
 			// 解析身体
 			parseBody(request.toString());
 
+			// 解析方法
+			parseMethod();
+			
 			// 解析 Uri
 			parseUri();
 			
@@ -193,6 +202,17 @@ public class RequestWrap implements Request {
 		
 		this.uri = this.header.get(0).split(" ")[1];
 	}
+	
+	/**
+	 * 解析方法
+	 */
+	private void parseMethod() {
+		if (header == null || header.size() == 0) {
+			return;
+		}
+		
+		this.method = this.header.get(0).split(" ")[0].toLowerCase();
+	}
 
 	/**
 	 * 解析Cookies
@@ -224,6 +244,7 @@ public class RequestWrap implements Request {
 	 * 
 	 * @return
 	 */
+	@Override
 	public List<String> getHeader() {
 		return Collections.unmodifiableList(this.header);
 	}
@@ -233,6 +254,7 @@ public class RequestWrap implements Request {
 	 * 
 	 * @return
 	 */
+	@Override
 	public byte[] getBody() {
 		return body;
 	}
@@ -242,6 +264,7 @@ public class RequestWrap implements Request {
 	 * 
 	 * @return
 	 */
+	@Override
 	public String getUri() {
 		return this.uri;
 	}
@@ -251,6 +274,7 @@ public class RequestWrap implements Request {
 	 * 
 	 * @return
 	 */
+	@Override
 	public Map<String, String> getParameters() {
 		return this.parameters;
 	}
@@ -261,6 +285,7 @@ public class RequestWrap implements Request {
 	 * @param key
 	 * @return
 	 */
+	@Override
 	public String getParameter(String key) {
 		return this.parameters.get(key);
 	}
@@ -268,6 +293,7 @@ public class RequestWrap implements Request {
 	/**
 	 * 得到Post方法某个参数
 	 */
+	@Override
 	public String post(String key) {
 		return this.postParameters.get(key);
 	}
@@ -278,6 +304,7 @@ public class RequestWrap implements Request {
 	 * @param key
 	 * @return
 	 */
+	@Override
 	public String get(String key) {
 		return getParameters.get(key);
 	}
@@ -297,5 +324,10 @@ public class RequestWrap implements Request {
 		if (key != null && !key.isEmpty() && value != null && !value.isEmpty()) {
 			this.parameters.put(key, value);
 		}
+	}
+
+	@Override
+	public String getMethod() {
+		return this.method;
 	}
 }

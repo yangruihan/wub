@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.yangruihan.wub.constant.Constant;
+import com.yangruihan.wub.constant.C;
 import com.yangruihan.wub.request.Cookie;
 import com.yangruihan.wub.request.Request;
 
@@ -62,7 +62,11 @@ public class ResponseWrap implements Response {
 		//
 		// 打印信息
 		//
-		System.out.println("Response: " + this.header.toString());
+		if (this.header.get(0).split(" ")[1].startsWith("2")) {
+			System.out.println("Response: " + this.header.toString());
+		} else {
+			System.err.println("Response: " + this.header.toString());
+		}
 
 		String response = (header.length() == 0 ? "" : header.toString()) + "\r\n"
 				+ (this.body == null ? "" : new String(this.body)) + "\r\n";
@@ -226,7 +230,7 @@ public class ResponseWrap implements Response {
 
 	@Override
 	public Response setStatus(int status, String describe) {
-		String s = String.format("%s %d %s", Constant.Http.HTTP_VERSION, status, describe);
+		String s = String.format("%s %d %s", C.Http.HTTP_VERSION, status, describe);
 		if (this.header.size() == 0) {
 			this.header.add(s);
 		} else if (this.header.get(0).contains(":")) {
